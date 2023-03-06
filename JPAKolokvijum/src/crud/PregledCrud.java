@@ -1,0 +1,55 @@
+package crud;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
+import model.Pacijent;
+import model.Pregled;
+import utils.PersistenceUtil;
+
+public class PregledCrud {
+	
+	public void insertPregled(Pregled pr) {
+		EntityManager em=PersistenceUtil.getEntityManager();
+		EntityTransaction et=null;
+		
+		try {
+			et=em.getTransaction();
+			et.begin();
+			
+			em.persist(pr);
+			
+			em.flush();
+			et.commit();
+		} catch (Exception e) {
+			if(et!=null) {
+				et.rollback();
+			}
+			e.printStackTrace();
+		}finally {
+			if(em!=null && em.isOpen())
+				em.close();
+		}
+	}
+	
+	public List<Pregled> prikazSvihPregledaPacijenta(Pacijent p){
+		EntityManager em=PersistenceUtil.getEntityManager();
+		p=em.merge(p);
+		p.getPregleds().size();
+		List<Pregled> list=p.getPregleds();
+		em.close();
+		return list;
+	}
+	
+	public List<Pregled> sviPregledi(){
+		EntityManager em=PersistenceUtil.getEntityManager();
+		List<Pregled> list=em.createQuery("select p from Pregled p order by p.brojP").getResultList();
+		em.close();
+		return list;
+	}
+
+	
+
+}

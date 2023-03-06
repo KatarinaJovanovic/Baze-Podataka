@@ -1,0 +1,36 @@
+package main;
+
+import crud.DijagnozaCrud;
+import crud.LekarCrud;
+import crud.PacijentCrud;
+import crud.PregledCrud;
+import model.Dijagnoza;
+import model.Pacijent;
+import model.Pregled;
+
+
+public class MainProgram {
+	public static void main(String[] args) {
+		PacijentCrud pacc=new PacijentCrud();
+		PregledCrud pc=new PregledCrud();
+		LekarCrud lc=new LekarCrud();
+		DijagnozaCrud dc=new DijagnozaCrud();
+		
+		/*Pacijent p=new Pacijent();
+		p.setImepac("Katarina");
+		p.setPrezpac("Jovanovic");
+		pacc.insertPacijent(p);*/
+		
+		Pacijent p=new Pacijent();
+		p.setImepac("Nikola");
+		p.setPrezpac("Djukic");
+		pacc.insertPacijent(p);
+		
+		Pregled pregled=new Pregled();
+		pregled.setDatum("12.08.2020");
+		pregled.setDijagnoza(dc.findDijagnoza(1));
+		pregled.setLekar(lc.findLekar(3));
+		pregled.setPacijent(pacc.findPacijent(1));
+		pc.insertPregled(pregled);
+	}
+}

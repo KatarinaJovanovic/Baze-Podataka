@@ -1,0 +1,87 @@
+package model;
+
+import java.io.Serializable;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * The persistent class for the pacijent database table.
+ * 
+ */
+@Entity
+@NamedQuery(name="Pacijent.findAll", query="SELECT p FROM Pacijent p")
+public class Pacijent implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int idp;
+
+	private String imepac;
+
+	private String prezpac;
+
+	//bi-directional many-to-one association to Pregled
+	@OneToMany(mappedBy="pacijent")
+	private List<Pregled> pregleds;
+
+	public Pacijent() {
+		this.pregleds=new ArrayList<Pregled>();
+	}
+
+	public int getIdp() {
+		return this.idp;
+	}
+
+	public void setIdp(int idp) {
+		this.idp = idp;
+	}
+
+	public String getImepac() {
+		return this.imepac;
+	}
+
+	public void setImepac(String imepac) {
+		this.imepac = imepac;
+	}
+
+	public String getPrezpac() {
+		return this.prezpac;
+	}
+
+	public void setPrezpac(String prezpac) {
+		this.prezpac = prezpac;
+	}
+
+	public List<Pregled> getPregleds() {
+		return this.pregleds;
+	}
+
+	public void setPregleds(List<Pregled> pregleds) {
+		this.pregleds = pregleds;
+	}
+
+	public Pregled addPregled(Pregled pregled) {
+		getPregleds().add(pregled);
+		pregled.setPacijent(this);
+
+		return pregled;
+	}
+
+	public Pregled removePregled(Pregled pregled) {
+		getPregleds().remove(pregled);
+		pregled.setPacijent(null);
+
+		return pregled;
+	}
+
+	@Override
+	public String toString() {
+		return "Pacijent: " + idp + ",  " + imepac + " " + prezpac;
+	}
+	
+	
+}
